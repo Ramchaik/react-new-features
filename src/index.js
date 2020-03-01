@@ -1,19 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
-const NoteApp = () => {
+const notesReducer = (state, action) => {
+  switch (action.type) {
+    case 'POPULATE_NOTES':
+      return action.notes;
 
-  const [notes, setNotes] = useState([]);
+    case 'ADD_NOTE':
+      return [...state, action.note];
+
+    case 'REMOVE_NOTE':
+      return state.filter(note => note.title !== action.title);
+  
+    default:
+      return state;
+  }
+}
+
+const NoteApp = () => {
+  const [notes, dispatch] = useReducer(notesReducer, [])
+  // const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
   // NOTE: constructor as fields passed to useEffect is []
   useEffect(() => {
-    const notesData = JSON.parse(localStorage.getItem('notes'));
+    const notes = JSON.parse(localStorage.getItem('notes'));
 
-    if (notesData) {
-      setNotes(notesData);
+    if (notes) {
+      dispatch({ type: "POPULATE_NOTES", notes });
     }
   }, []);
 
@@ -24,19 +40,14 @@ const NoteApp = () => {
 
   const addNote = (e) => {
     e.preventDefault();
-    setNotes([
-      ...notes,
-      {
-        title,
-        body
-      }
-    ]);
+    
+    dispatch({ type: 'ADD_NOTE', note: { title, body } });
 
     setTitle('');
     setBody('');
   }
 
-  const removeNote = (title) => setNotes(notes.filter(note => note.title !== title))
+  const removeNote = (title) => dispatch({ type: 'REMOVE_NOTE', title });
 
   return (
     <div>
@@ -66,7 +77,7 @@ const Note = ({ note = {}, removeNote }) => {
       console.log('Cleaning up effect')
     }
   }, []);
-  
+
   return (
     <div>
       <h3>{note.title}</h3>
