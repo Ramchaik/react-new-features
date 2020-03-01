@@ -20,7 +20,6 @@ const notesReducer = (state, action) => {
 
 const NoteApp = () => {
   const [notes, dispatch] = useReducer(notesReducer, [])
-  // const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
@@ -40,7 +39,7 @@ const NoteApp = () => {
 
   const addNote = (e) => {
     e.preventDefault();
-    
+
     dispatch({ type: 'ADD_NOTE', note: { title, body } });
 
     setTitle('');
