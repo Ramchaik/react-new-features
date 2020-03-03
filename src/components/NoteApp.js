@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import notesReducer from '../reducer/notes';
 import NoteList from './NoteList';
 import AddNoteForm from './AddNoteForm';
