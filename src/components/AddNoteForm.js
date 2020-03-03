@@ -18,14 +18,14 @@ const AddNoteForm = () => {
 
 
 	return (
-    	<div>
+    	<>
 			<p>Add Note</p>
 			<form onSubmit={addNote}>
 				<input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
 				<textarea name="body" cols="30" rows="10" value={body} onChange={e => setBody(e.target.value)}></textarea>
 				<button>Add Note</button>
 			</form>
-		</div>);
+		</>);
 }
 
 export { AddNoteForm as default };
